@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 
 void main() {
   runApp(MyApp());
@@ -54,8 +55,25 @@ class _ImageClassifierScreenState extends State<ImageClassifierScreen> {
       _result = '';
     });
 
-    // Set your Flask API URL here
-    String apiUrl = 'http://127.0.0.1:5000/classify';
+// Define the base URL based on the platform
+String getBackendUrl() {
+  // Physical device - replace with your actual local IP address
+  const String physicalDeviceUrl = "http://192.168.1.189:5000"; 
+  return physicalDeviceUrl;
+
+  // // Platform-specific URLs
+  // if (Platform.isAndroid) {
+  //   return "http://10.0.2.2:5000"; // Android emulator
+  // } else if (Platform.isIOS) {
+  //   return "http://127.0.0.1:5000"; // iOS simulator
+  // } else {
+  //   return physicalDeviceUrl; // Fallback for physical devices
+  // }
+}
+
+// Set up the API URL
+String apiUrl = getBackendUrl() + '/classify';
+    
 
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
@@ -77,6 +95,7 @@ class _ImageClassifierScreenState extends State<ImageClassifierScreen> {
       }
     } catch (e) {
       setState(() {
+        print(apiUrl);
         _result = 'Error: $e';
       });
     } finally {
