@@ -155,5 +155,5 @@ test_loss, test_accuracy = model.evaluate(test_ds)
 print(f'Test accuracy: {test_accuracy}')
 
 # Save the model
-model.save('model_current.h5')
+model.save('model_current.keras')
 
